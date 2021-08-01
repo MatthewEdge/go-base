@@ -4,6 +4,8 @@ services:
 
   app:
     build: .
+    environment:
+      RELEASE_VERSION: "0.0.1"
     ports:
       - "8080:8080"
 

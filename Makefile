@@ -1,6 +1,10 @@
 BUILD_DIR=bin
 APP=app
 
+.PHONY: run
+run:
+	go run main.go -port "8080" -version "$(shell git rev-parse --short HEAD)"
+
 .PHONY: build
 build:
 	mkdir -p ${BUILD_DIR}
