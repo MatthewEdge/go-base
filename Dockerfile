@@ -4,7 +4,8 @@ WORKDIR /usr/src/app
 # git for go mod. ca-certificates for SSL capability
 RUN apk update && apk add --no-cache \
     git \
-    ca-certificates && \
+    ca-certificates \
+    tzdata && \
   update-ca-certificates
 
 COPY go.mod /usr/src/app/go.mod
@@ -18,13 +19,14 @@ RUN GOOS=linux CGO_ENABLED=0 \
     go build -a -ldflags="-w -s" -o run main.go
 
 # Final, clean image
-FROM scratch
+FROM alpine
 WORKDIR /go/bin
 
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+# Uncomment v if timezone data desired 
+#COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=builder /usr/src/app/run /go/bin/run
 
 EXPOSE 8080
-
 ENV RELEASE_VERSION
 CMD /go/bin/run -host "0.0.0.0" -port "8080" -version "${RELEASE_VERSION}"
