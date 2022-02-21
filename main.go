@@ -2,24 +2,29 @@ package main
 
 import (
 	"app/server"
-	"flag"
 	"fmt"
 	"log"
 	"net/http"
 	"time"
 )
 
-func main() {
-	addr := flag.String("host", "localhost", "Address to listen on for the HTTP server")
-	port := flag.Int("port", 8080, "Port for the HTTP server to listen on")
-	version := flag.String("version", "", "Deployed version of the app")
+// Host the HTTP server should bind to
+var Host string = "localhost"
 
-	s := server.New(*version)
+// Port the HTTP server should bind to
+var Port string = "8080"
+
+// Version of the application exposed on /version route
+var Version string = "0.0.0"
+
+func main() {
+
+	s := server.New(Version)
 	srv := &http.Server{
 		ReadTimeout:  2 * time.Second,   // Time to read the request
 		WriteTimeout: 10 * time.Second,  // Time to write a response
 		IdleTimeout:  120 * time.Second, // Max time for keep-alive waits
-		Addr:         fmt.Sprintf("%s:%d", *addr, *port),
+		Addr:         fmt.Sprintf("%s:%s", Host, Port),
 		Handler:      s,
 	}
 

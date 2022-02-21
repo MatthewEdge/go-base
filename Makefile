@@ -3,12 +3,7 @@ APP=app
 
 .PHONY: run
 run:
-	go run main.go -port "8080" -version "$(shell git rev-parse --short HEAD)"
-
-.PHONY: build
-build:
-	mkdir -p ${BUILD_DIR}
-	go build -o ${BUILD_DIR}/${APP} main.go
+	go run main.go
 
 .PHONY: test
 test:
