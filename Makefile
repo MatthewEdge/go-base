@@ -1,16 +1,26 @@
 BUILD_DIR=bin
 APP=app
 
+.DEFAULT_GOAL: help
+
+.PHONY: help
+help:
+	@echo "Options:\n"
+	@sed -n 's|^##||p' ${PWD}/Makefile
+
+## run: Run the app directly
 .PHONY: run
 run:
 	go run main.go
 
+## test: Run unit tests and open the Converage HTML report
 .PHONY: test
 test:
 	go test ./... -coverprofile out.prof
 	go tool cover -html=out.prof
 	rm ./out.prof
 
+## docs: Run the Go Docs server
 .PHONY: docs
 docs:
 	go get golang.org/x/tools/cmd/godoc
