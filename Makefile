@@ -8,6 +8,16 @@ help:
 	@echo "Options:\n"
 	@sed -n 's|^##||p' ${PWD}/Makefile
 
+## build: Build the app's container environment. Optional: app={SERVICE_NAME}
+.PHONY: build
+build:
+	docker compose build ${app}
+
+## start: Start the container environment. Optional: app={SERVICE_NAME}
+.PHONY: start
+start:
+	docker compose up -d ${app}
+
 ## run: Run the app directly
 .PHONY: run
 run:
