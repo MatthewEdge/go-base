@@ -18,6 +18,11 @@ build:
 start:
 	docker compose up -d ${app}
 
+## stop: Stop the container environment. Optional: app={SERVICE_NAME}
+.PHONY: stop
+stop:
+	docker compose stop  ${app}
+
 ## run: Run the app directly
 .PHONY: run
 run:
