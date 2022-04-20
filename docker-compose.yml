@@ -10,3 +10,18 @@ services:
     ports:
       - "8080:8080"
 
+  db:
+    image: postgres:14-alpine
+    environment:
+      - POSTGRES_PASSWORD=sup3rS3cr3t!
+      - POSTGRES_DB=appdb
+    # Disabled by default for clean env rebuilds but enable if data load is particularly arduous
+    # volumes:
+      # - ./containers/postgres/data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:6-alpine
+    ports:
+      - "6379:6379"
