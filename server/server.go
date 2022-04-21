@@ -4,12 +4,13 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/go-chi/chi"
 	"github.com/jmoiron/sqlx"
 )
 
 // Server creates a contextual HTTP server with shared dependencies
 type Server struct {
-	router *http.ServeMux
+	router *chi.Mux
 	db     *sqlx.DB
 
 	// Deployed version
@@ -24,15 +25,15 @@ func New(db *sqlx.DB, version string) *Server {
 		version: version,
 	}
 
-	r := http.NewServeMux()
+	r := chi.NewRouter()
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(200)
 	})
 
 	// Health and Readiness
-	r.HandleFunc("/health", s.healthCheck())
-	r.HandleFunc("/ready", s.readyCheck())
-	r.HandleFunc("/version", s.versionCheck())
+	r.Get("/health", s.healthCheck())
+	r.Get("/ready", s.readyCheck())
+	r.Get("/version", s.versionCheck())
 
 	s.router = r
 	return s
