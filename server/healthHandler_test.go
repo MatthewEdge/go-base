@@ -8,7 +8,7 @@ import (
 )
 
 func TestHealthCheckHandler(t *testing.T) {
-	srv := New("1.0.0")
+	srv := New(nil, "1.0.0")
 
 	req, err := http.NewRequest("GET", "/health", nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func TestHealthCheckHandler(t *testing.T) {
 }
 
 func TestVersionCheck(t *testing.T) {
-	srv := New("1.0.0")
+	srv := New(nil, "1.0.0")
 
 	req, err := http.NewRequest("GET", "/version", nil)
 	if err != nil {

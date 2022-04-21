@@ -3,20 +3,24 @@ package server
 import (
 	"encoding/json"
 	"net/http"
+
+	"github.com/jmoiron/sqlx"
 )
 
 // Server creates a contextual HTTP server with shared dependencies
 type Server struct {
 	router *http.ServeMux
+	db     *sqlx.DB
 
 	// Deployed version
 	version string
 }
 
 // New returns a new Server with routes initialized
-func New(version string) *Server {
+func New(db *sqlx.DB, version string) *Server {
 
 	s := &Server{
+		db:      db,
 		version: version,
 	}
 

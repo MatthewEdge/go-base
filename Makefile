@@ -18,10 +18,20 @@ build:
 start:
 	docker compose up -d ${app}
 
+## logs: Tail logs. Optional: app={SERVICE_NAME}
+.PHONY: logs
+logs:
+	docker compose logs -f ${app}
+
 ## stop: Stop the container environment. Optional: app={SERVICE_NAME}
 .PHONY: stop
 stop:
 	docker compose stop  ${app}
+
+## dbcli: Connect to the DB container using pgsql
+.PHONY: dbcli
+dbcli:
+	docker run --rm -it --network default -e PGPASSWORD=dontUseThisInProduction postgres:14-alpine psql -h db -U postgres -d appdb -x
 
 ## run: Run the app directly
 .PHONY: run

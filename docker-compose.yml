@@ -7,13 +7,18 @@ services:
       context: .
       args:
         - VERSION=1.0.0
+    environment:
+      - DATABASE_USER=postgres
+      - DATABASE_PASS=dontUseThisInProduction
+      - DATABASE_HOST=db:5432/appdb
+      - SSLMODE=disable
     ports:
       - "8080:8080"
 
   db:
     image: postgres:14-alpine
     environment:
-      - POSTGRES_PASSWORD=sup3rS3cr3t!
+      - POSTGRES_PASSWORD=dontUseThisInProduction
       - POSTGRES_DB=appdb
     # Disabled by default for clean env rebuilds but enable if data load is particularly arduous
     # volumes:

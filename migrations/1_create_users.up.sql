@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS users (
+  id BIGSERIAL PRIMARY KEY,
+  email TEXT,
+  created_on TIMESTAMP WITH TIMEZONE
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_user_emails ON users (email);
