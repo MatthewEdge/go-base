@@ -2,6 +2,7 @@ package main
 
 import (
 	"app/env"
+	"app/logger"
 	"app/server"
 	"embed"
 	"fmt"
@@ -38,7 +39,7 @@ func main() {
 	dbURL := fmt.Sprintf("postgres://%s:%s@%s?sslmode=%s", dbUser, dbPass, dbHost, sslMode)
 	db, err := retryConnect(dbURL, 5)
 	if err != nil {
-		log.Fatalf("Failed to connect to the Database: %s", err.Error())
+		logger.Fatal(err, "Failed to connect to the Database")
 	}
 
 	log.Println("Running DB migrations...")
@@ -46,7 +47,7 @@ func main() {
 	migrationsFS, err := iofs.New(migrations, "migrations")
 	m, err := migrate.NewWithInstance("iofs", migrationsFS, "postgres", driver)
 	if err != nil {
-		log.Fatalf("Failed to run migrations: %s", err)
+		logger.Fatal(err, "Failed to run migrations")
 	}
 
 	m.Up()
@@ -60,7 +61,7 @@ func main() {
 		Handler:      s,
 	}
 
-	log.Fatal(srv.ListenAndServe())
+	srv.ListenAndServe()
 }
 
 func retryConnect(connStr string, maxRetries int) (*sqlx.DB, error) {
@@ -76,7 +77,7 @@ func retryConnect(connStr string, maxRetries int) (*sqlx.DB, error) {
 
 		// Double sleep each time to ramp retries exponentially
 		nextSleep := i * 2
-		log.Printf("DB not connected: %s. Retrying in %d seconds...", err.Error(), nextSleep)
+		logger.Warn("DB not connected: %s. Retrying in %d seconds...", err.Error(), nextSleep)
 		time.Sleep(time.Duration(nextSleep) * time.Second)
 	}
 
