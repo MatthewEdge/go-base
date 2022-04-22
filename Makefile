@@ -3,6 +3,8 @@ APP=app
 
 .DEFAULT_GOAL: help
 
+COMPOSE=docker-compose
+
 .PHONY: help
 help:
 	@echo "Options:\n"
@@ -11,27 +13,27 @@ help:
 ## build: Build the app's container environment. Optional: app={SERVICE_NAME}
 .PHONY: build
 build:
-	docker compose build ${app}
+	${COMPOSE} build ${app}
 
 ## start: Start the container environment. Optional: app={SERVICE_NAME}
 .PHONY: start
 start:
-	docker compose up -d ${app}
+	${COMPOSE} up -d ${app}
 
 ## logs: Tail logs. Optional: app={SERVICE_NAME}
 .PHONY: logs
 logs:
-	docker compose logs -f ${app}
+	${COMPOSE} logs -f ${app}
 
 ## stop: Stop the container environment. Optional: app={SERVICE_NAME}
 .PHONY: stop
 stop:
-	docker compose stop  ${app}
+	${COMPOSE} stop  ${app}
 
 ## dbcli: Connect to the DB container using pgsql
 .PHONY: dbcli
 dbcli:
-	docker run --rm -it --network default -e PGPASSWORD=dontUseThisInProduction postgres:14-alpine psql -h db -U postgres -d appdb -x
+	docker run --rm -it --network go-base_default -e PGPASSWORD=dontUseThisInProduction postgres:14-alpine psql -h db -U postgres -d appdb -x
 
 ## run: Run the app directly
 .PHONY: run

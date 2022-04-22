@@ -49,8 +49,7 @@ func main() {
 	if err != nil {
 		logger.Fatal(err, "Failed to run migrations")
 	}
-
-	m.Up()
+	m.Steps(1)
 
 	s := server.New(db, Version)
 	srv := &http.Server{
