@@ -80,5 +80,5 @@ func retryConnect(connStr string, maxRetries int) (*sqlx.DB, error) {
 		time.Sleep(time.Duration(nextSleep) * time.Second)
 	}
 
-	return nil, fmt.Errorf("Failed to connect to the DB after %d retries", maxRetries)
+	return nil, fmt.Errorf("error connecting to the DB after %d retries", maxRetries)
 }
